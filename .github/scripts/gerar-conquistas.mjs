@@ -68,7 +68,8 @@ async function dadosReais() {
   }
 
   // Repositórios: donos, colaborador, organização + todos em que contribuiu
-  const proprios = await reposPaginados("repositories", "ownerAffiliations:[OWNER, COLLABORATOR, ORGANIZATION_MEMBER]");
+  // Com token pessoal pega também colaborações/organizações; o "privacy:PUBLIC" garante os públicos mesmo com o token padrão da Action
+  const proprios = [...await reposPaginados("repositories", "ownerAffiliations:[OWNER, COLLABORATOR, ORGANIZATION_MEMBER]"), ...await reposPaginados("repositories", "privacy:PUBLIC")];
   const contribuidos = await reposPaginados("repositoriesContributedTo", "includeUserRepositories:true, contributionTypes:[COMMIT, PULL_REQUEST, ISSUE, REPOSITORY]");
   const mapa = new Map();
   for (const r of [...proprios, ...contribuidos]) if (!r.isFork || r.owner.login !== USER) mapa.set(r.nameWithOwner, r);
