@@ -1,0 +1,43 @@
+name: Baú de Conquistas
+
+on:
+  schedule:
+    - cron: "17 6 * * *"   # todo dia, 03:17 no horário de Brasília
+  workflow_dispatch:       # botão "Run workflow" na aba Actions
+  push:
+    branches: [main]
+    paths:
+      - ".github/scripts/gerar-conquistas.mjs"
+      - ".github/workflows/conquistas.yml"
+      - "assets/bau-de-conquistas.svg"
+
+permissions:
+  contents: write
+
+jobs:
+  gerar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Gerar assets/conquistas.svg
+        env:
+          # Token pessoal (recomendado) para incluir repositórios privados e colaborações.
+          # Sem ele, usa o token padrão da Action (só dados públicos).
+          GH_TOKEN: ${{ secrets.CONQUISTAS_TOKEN || secrets.GITHUB_TOKEN }}
+          USERNAME: ${{ github.repository_owner }}
+          # Ex.: "Jupyter Notebook,Dockerfile" para ignorar linguagens
+          IGNORAR_LINGUAGENS: ""
+        run: node .github/scripts/gerar-conquistas.mjs
+
+      - name: Salvar no repositório
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/conquistas.svg
+          git diff --cached --quiet || git commit -m "⚓ Atualiza o Baú de Conquistas"
+          git push
