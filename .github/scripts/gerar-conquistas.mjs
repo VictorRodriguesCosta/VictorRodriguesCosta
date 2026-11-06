@@ -1,4 +1,4 @@
-// Gera assets/conquistas.svg — o "Baú de Conquistas" do README.
+// Gera conquistas.svg — o "Baú de Conquistas" do README.
 // Busca no GitHub (GraphQL): contribuições de todos os anos, sequências,
 // e as linguagens de TODOS os repositórios em que o usuário é dono,
 // colaborador, membro de organização ou já contribuiu (commits/PRs/issues).
@@ -10,7 +10,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 const USER = process.env.USERNAME || process.env.GITHUB_REPOSITORY_OWNER || "VictorRodriguesCosta";
 const TOKEN = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
 const DEMO = process.env.DEMO === "1";
-const OUT = process.env.OUT || "assets/conquistas.svg";
+const OUT = process.env.OUT || "conquistas.svg";
 // Linguagens que não devem entrar na conta (separe por vírgula)
 const IGNORAR = (process.env.IGNORAR_LINGUAGENS || "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
 
@@ -263,8 +263,8 @@ function navegacao(d, x, y) {
 }
 
 function montar(d) {
-  const fonte = readFileSync("assets/fonts/pirata-one.woff2").toString("base64");
-  let cab = readFileSync("assets/bau-de-conquistas.svg", "utf8");
+  const fonte = readFileSync("pirata-one.woff2").toString("base64");
+  let cab = readFileSync("bau-de-conquistas.svg", "utf8");
   cab = cab.replace(/<svg[^>]*>/, '<svg x="0" y="0" width="1100" height="370" viewBox="0 0 1100 370">').replace(/<title>.*?<\/title>/, "");
   const W = 1100, H = 370 + 16 + 330 + 16 + 430;
   const atualizado = new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" });
