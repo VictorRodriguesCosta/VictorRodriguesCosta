@@ -9,7 +9,7 @@ on:
     paths:
       - ".github/scripts/gerar-conquistas.mjs"
       - ".github/workflows/conquistas.yml"
-      - "assets/bau-de-conquistas.svg"
+      - "bau-de-conquistas.svg"
 
 permissions:
   contents: write
@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: 20
 
-      - name: Gerar assets/conquistas.svg
+      - name: Gerar conquistas.svg
         env:
           # Token pessoal (recomendado) para incluir repositórios privados e colaborações.
           # Sem ele, usa o token padrão da Action (só dados públicos).
@@ -38,6 +38,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/conquistas.svg
+          git add conquistas.svg
           git diff --cached --quiet || git commit -m "⚓ Atualiza o Baú de Conquistas"
           git push
